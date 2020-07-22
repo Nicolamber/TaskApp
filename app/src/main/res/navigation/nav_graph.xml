@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="nico.lambertucci.mytodoapp.LoginFragment"
+        android:name="nico.lambertucci.mytodoapp.ui.LoginFragment"
         android:label="login_fragment"
         tools:layout="@layout/login_fragment" >
         <action
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/signUp"
-        android:name="nico.lambertucci.mytodoapp.SignUp"
+        android:name="nico.lambertucci.mytodoapp.ui.SignUp"
         android:label="sign_up_fragment"
         tools:layout="@layout/sign_up_fragment" >
         <action
@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/mainScreen"
-        android:name="nico.lambertucci.mytodoapp.MainScreen"
+        android:name="nico.lambertucci.mytodoapp.ui.MainScreen"
         android:label="main_screen_fragment"
         tools:layout="@layout/main_screen_fragment" />
 </navigation>

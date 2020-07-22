@@ -1,4 +1,4 @@
-package nico.lambertucci.mytodoapp.domain
+package nico.lambertucci.mytodoapp.domain.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

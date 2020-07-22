@@ -1,7 +1,13 @@
 <resources>
-    <string name="app_name">MyTodoApp</string>
+    <string name="app_name">Task!</string>
     <string name="username">Usuario</string>
     <string name="password">Contraseña</string>
     <string name="login">Iniciar Sesión</string>
     <string name="signup">Registrarse</string>
+    <string name="Overview">Inicio</string>
+    <string name="favorites">Favoritos</string>
+    <string name="tasktitle">TaskTitle</string>
+    <string name="taskstatus">TaskStatus</string>
+    <string name="tasksize">TaskSize</string>
+    <string name="settasktofav">setTaskToFav</string>
 </resources>

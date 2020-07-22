@@ -1,6 +1,7 @@
-package nico.lambertucci.mytodoapp
+package nico.lambertucci.mytodoapp.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
+import nico.lambertucci.mytodoapp.ui.taskDatabase
 
 class LoginViewModel : ViewModel() {
 

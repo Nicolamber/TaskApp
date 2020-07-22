@@ -1,9 +1,10 @@
-package nico.lambertucci.mytodoapp
+package nico.lambertucci.mytodoapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.fragment.NavHostFragment
-import nico.lambertucci.mytodoapp.domain.TaskDatabase
+import nico.lambertucci.mytodoapp.R
+import nico.lambertucci.mytodoapp.domain.database.TaskDatabase
 
  lateinit var taskDatabase: TaskDatabase
 
@@ -17,7 +18,8 @@ class MainActivity : AppCompatActivity() {
         val host = NavHostFragment.create(R.navigation.nav_graph)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer,
+                .replace(
+                    R.id.fragmentContainer,
                     host
                 )
                 .setPrimaryNavigationFragment(host)

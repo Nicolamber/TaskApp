@@ -1,10 +1,12 @@
-package nico.lambertucci.mytodoapp.domain
+package nico.lambertucci.mytodoapp.domain.database
 
 import android.content.Context
 import android.util.Log
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import nico.lambertucci.mytodoapp.domain.TaskDAO
+import nico.lambertucci.mytodoapp.domain.UserDAO
 
 @Database(
     version = 1,

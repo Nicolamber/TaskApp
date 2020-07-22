@@ -1,4 +1,4 @@
-package nico.lambertucci.mytodoapp
+package nico.lambertucci.mytodoapp.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,6 +9,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.sign_up_fragment.*
+import nico.lambertucci.mytodoapp.R
+import nico.lambertucci.mytodoapp.ui.viewmodel.SignUpViewModel
 import nico.lambertucci.mytodoapp.utils.AuthenticationUtilities
 
 class SignUp : Fragment() {

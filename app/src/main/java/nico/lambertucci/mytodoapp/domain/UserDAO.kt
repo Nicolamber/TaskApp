@@ -1,13 +1,14 @@
 package nico.lambertucci.mytodoapp.domain
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
+import nico.lambertucci.mytodoapp.domain.database.User
 
 
 @Dao
 interface UserDAO {
+    
     @Query("SELECT * FROM user")
-    fun getAll(): List<User>
+    fun getAllUsers(): List<User>
 
     @Query("SELECT * FROM user WHERE user.`username` = :username")
     fun verifyUserById(username: String): User
@@ -19,6 +20,6 @@ interface UserDAO {
     fun insertUser(user: User)
 
     @Delete
-    fun delete(user: User)
+    fun deleteUser(user: User)
 
 }

@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="@drawable/background_login"
     android:gravity="center"
-    tools:context=".LoginFragment">
+    tools:context=".ui.LoginFragment">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

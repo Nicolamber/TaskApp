@@ -1,23 +1,24 @@
 package nico.lambertucci.mytodoapp.domain
 
 import androidx.room.*
+import nico.lambertucci.mytodoapp.domain.database.Task
 
 @Dao
 interface TaskDAO {
 
     @Query("SELECT * FROM task")
-    fun getAll(): List<Task>
+    fun getAllTasks(): List<Task>
 
     @Query("SELECT * FROM task WHERE task.`taskId` = :taskId")
-    fun loadAllByIds(taskId: String): List<Task>
+    fun getTaskById(taskId: String): Task
 
-    @Query("SELECT * FROM task WHERE task.`taskName` = :taskName")
-    fun findByName(taskName: String): Task
+    @Query("SELECT * FROM task WHERE task.`isFavorite` = :favorite")
+    fun getFavoriteTasks(favorite:Boolean): Task
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(task: Task)
+    fun insertTask(task: Task)
 
     @Delete
-    fun delete(task: Task)
+    fun deleteTask(task: Task)
 
 }
