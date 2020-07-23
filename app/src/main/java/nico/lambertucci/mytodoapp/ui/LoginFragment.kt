@@ -17,6 +17,7 @@ import nico.lambertucci.mytodoapp.utils.AuthenticationUtilities
 class LoginFragment : Fragment() {
 
     private lateinit var viewModel: LoginViewModel
+    private lateinit var user:String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,9 +30,13 @@ class LoginFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 
+
+
         loginUser.setOnClickListener {
             if (loginUser()) {
-                findNavController().navigate(R.id.mainScreen, null)
+                val bundle: Bundle? = Bundle()
+                bundle?.putString("username",user)
+                findNavController().navigate(R.id.mainScreen, bundle)
             }
         }
         registerUser.setOnClickListener {
@@ -40,8 +45,10 @@ class LoginFragment : Fragment() {
     }
 
     private fun loginUser(): Boolean {
-        val user = username.editText?.text.toString()
+
+         user = username.editText?.text.toString()
         val pass = password.editText?.text.toString()
+
         if (AuthenticationUtilities().validateUserAndPass(user, pass)) {
             return if (viewModel.loginUser(user, pass)) {
                 true

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +15,7 @@ import kotlinx.android.synthetic.main.main_screen_fragment.*
 import nico.lambertucci.mytodoapp.R
 import nico.lambertucci.mytodoapp.ui.adapter.TaskAdapter
 import nico.lambertucci.mytodoapp.ui.viewmodel.MainScreenViewModel
+import nico.lambertucci.mytodoapp.utils.FavItemListener
 
 class MainScreen : Fragment() {
 
@@ -22,7 +24,7 @@ class MainScreen : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
-
+    private  var username: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,14 +36,29 @@ class MainScreen : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainScreenViewModel::class.java)
+        if (arguments !=null){
+            username = requireArguments().getString("username")
+
+        }
         setupBottomNavigation()
+        setUpView()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //setupBottomNavigation()
         setUpView()
     }
 
     private fun setUpView() {
         viewManager = LinearLayoutManager(requireContext())
         viewModel.getTasks().observe(viewLifecycleOwner, Observer {
-            viewAdapter = TaskAdapter(it)
+            viewAdapter = TaskAdapter(it,object: FavItemListener{
+                override fun onClick(position: Int) {
+                    findNavController().navigate(R.id.addTask)
+                }
+
+            })
             recyclerView = requireView().findViewById<RecyclerView>(R.id.mainTaskRecyclerView).apply {
                 setHasFixedSize(true)
                 addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
@@ -62,7 +79,9 @@ class MainScreen : Fragment() {
                     true
                 }
                 R.id.addNewTask -> {
-                    //TODO NAVIGATE TO ADD TASK
+                    val bundle: Bundle? = Bundle()
+                    bundle?.putString("taskAuthor",username)
+                    findNavController().navigate(R.id.addTask,bundle)
                     true
                 }
                 R.id.favs -> {

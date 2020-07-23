@@ -5,58 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="80dp">
 
+
     <TextView
         android:id="@+id/taskTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/tasktitle"
+        android:textColor="@android:color/black"
         android:textSize="16sp"
-        android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.051"
+        app:layout_constraintHorizontal_bias="0.127"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.28" />
-
-    <TextView
-        android:id="@+id/taskStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/taskstatus"
-        android:textSize="12sp"
-        android:textColor="@android:color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.052"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/taskTitle"
-        app:layout_constraintVertical_bias="0.72" />
-
-    <TextView
-        android:id="@+id/taskSize"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/tasksize"
-        android:textSize="12sp"
-        android:textColor="@android:color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.925"
-        app:layout_constraintStart_toEndOf="@+id/taskStatus"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.885" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/taskFavorite"
         android:layout_width="42dp"
         android:layout_height="38dp"
-        app:layout_constraintBottom_toTopOf="@+id/taskSize"
+        android:contentDescription="@string/settasktofav"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.931"
+        app:layout_constraintHorizontal_bias="0.938"
         app:layout_constraintStart_toEndOf="@+id/taskTitle"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.26"
-        tools:srcCompat="@tools:sample/avatars"
-        android:contentDescription="@string/settasktofav" />
+        tools:srcCompat="@tools:sample/avatars" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,20 +1,27 @@
 package nico.lambertucci.mytodoapp.ui.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import nico.lambertucci.mytodoapp.R
 import nico.lambertucci.mytodoapp.domain.database.Task
+import nico.lambertucci.mytodoapp.utils.FavItemListener
 
 class TaskAdapter(
-    private val taskList: List<Task>
+    private val taskList: List<Task>,
+    private val listener: FavItemListener
 ): RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
 
+    lateinit var context: Context
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.task_item,parent,false))
+        context = parent.context
+        return ViewHolder(LayoutInflater.from(context).inflate(R.layout.task_item,parent,false), listener)
     }
 
     override fun getItemCount(): Int {
@@ -24,20 +31,22 @@ class TaskAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = taskList[position]
         holder.taskName.text = item.taskName
-        holder.taskStatus.text = "Estado: ${item.taskStatus}"
-        holder.taskSize.text = "Puntaje: ${item.taskSize}"
         if(item.isFavorite){
             holder.isTaskFav.setImageResource(R.drawable.filled_star)
         }else{
             holder.isTaskFav.setImageResource(R.drawable.empty_star)
         }
-
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View, private var listener: FavItemListener) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         val taskName: TextView = itemView.findViewById(R.id.taskTitle)
-        val taskStatus: TextView = itemView.findViewById(R.id.taskStatus)
-        val taskSize: TextView = itemView.findViewById(R.id.taskSize)
         val isTaskFav: ImageView = itemView.findViewById(R.id.taskFavorite)
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(view: View?) {
+            this.listener.onClick(adapterPosition)
+        }
     }
 }

@@ -10,4 +10,8 @@
     <string name="taskstatus">TaskStatus</string>
     <string name="tasksize">TaskSize</string>
     <string name="settasktofav">setTaskToFav</string>
+    <string name="Taskname">Nombre de la tarea.</string>
+    <string name="description">Descripción</string>
+    <string name="Add">Crear</string>
+    <string name="favorite">Favorito:</string>
 </resources>

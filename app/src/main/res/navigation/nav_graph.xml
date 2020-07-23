@@ -31,5 +31,22 @@
         android:id="@+id/mainScreen"
         android:name="nico.lambertucci.mytodoapp.ui.MainScreen"
         android:label="main_screen_fragment"
-        tools:layout="@layout/main_screen_fragment" />
+        tools:layout="@layout/main_screen_fragment" >
+        <action
+            android:id="@+id/action_mainScreen_to_addTask"
+            app:destination="@id/addTask" />
+    </fragment>
+    <fragment
+        android:id="@+id/addTask"
+        android:name="nico.lambertucci.mytodoapp.ui.AddTask"
+        android:label="add_task_fragment"
+        tools:layout="@layout/add_task_fragment" >
+        <action
+            android:id="@+id/action_addTask_to_mainScreen"
+            app:destination="@id/mainScreen" />
+        <argument
+            android:name="taskAuthor"
+            app:argType="string"
+            android:defaultValue="none" />
+    </fragment>
 </navigation>
