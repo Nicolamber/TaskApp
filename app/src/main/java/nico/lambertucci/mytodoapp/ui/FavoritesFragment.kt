@@ -24,14 +24,13 @@ class FavoritesFragment : Fragment() {
     private lateinit var favRecyclerView: RecyclerView
     private lateinit var favViewAdapter: RecyclerView.Adapter<*>
     private lateinit var favViewManager: RecyclerView.LayoutManager
-    private var username: String? = null
     private lateinit var favsToolbar: androidx.appcompat.widget.Toolbar
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view=  inflater.inflate(R.layout.favorites_fragment, container, false)
+        val view = inflater.inflate(R.layout.favorites_fragment, container, false)
 
         favsToolbar = view.findViewById(R.id.overviewToolbar)
         (activity as AppCompatActivity).setSupportActionBar(favsToolbar)
@@ -42,8 +41,13 @@ class FavoritesFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(FavoritesViewModel::class.java)
-        if (arguments != null) {
-            username = requireArguments().getString("taskAuthor")
+
+        favsToolbar.apply {
+            title = "Tus tareas destacadas!"
+            setNavigationIcon(R.drawable.ic_back_button)
+            setNavigationOnClickListener {
+                findNavController().navigate(R.id.overviewScreen)
+            }
         }
 
         setUpView()
@@ -58,9 +62,11 @@ class FavoritesFragment : Fragment() {
     private fun setUpView() {
         favViewManager = LinearLayoutManager(requireContext())
         viewModel.getFavorites().observe(viewLifecycleOwner, Observer {
-            favViewAdapter = FavoritesAdapter(it,object :FavItemListener{
-                override fun onClick(position: Int) {
-                    findNavController().navigate(R.id.addTask)
+            favViewAdapter = FavoritesAdapter(it, object : FavItemListener {
+                override fun onClick(position: Int,taskId: Int) {
+                    val bundle: Bundle? = Bundle()
+                    bundle?.putInt("taskId",taskId)
+                    findNavController().navigate(R.id.detailFragment,bundle)
                 }
 
             })
@@ -81,8 +87,6 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun setupBottomNavigation() {
-        val bundle: Bundle? = Bundle()
-        bundle?.putString("taskAuthor", username)
 
         favBottomNavigationView.selectedItemId =
             R.id.favs
@@ -90,11 +94,11 @@ class FavoritesFragment : Fragment() {
         favBottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.overview -> {
-                    findNavController().navigate(R.id.overviewScreen,bundle)
+                    findNavController().navigate(R.id.overviewScreen)
                     true
                 }
                 R.id.addNewTask -> {
-                    findNavController().navigate(R.id.addTask, bundle)
+                    findNavController().navigate(R.id.addTask)
                     true
                 }
                 R.id.favs -> {

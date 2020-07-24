@@ -32,22 +32,27 @@ class FavoritesAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = favList[position]
-        holder.taskName.text = item.taskName
-        holder.isTaskFav.setImageResource(R.drawable.filled_star)
-
+       holder.bindUI(item)
     }
 
     class ViewHolder(itemView: View, private var listener: FavItemListener) :
         RecyclerView.ViewHolder(itemView), View.OnClickListener {
-        val taskName: TextView = itemView.findViewById(R.id.taskTitle)
-        val isTaskFav: ImageView = itemView.findViewById(R.id.taskFavorite)
+        private val taskName: TextView = itemView.findViewById(R.id.taskTitle)
+        private val isTaskFav: ImageView = itemView.findViewById(R.id.taskFavorite)
+        private var taskId: Int = 0
 
         init {
             itemView.setOnClickListener(this)
         }
 
+        fun bindUI(item:Task){
+            taskName.text = item.taskName
+            isTaskFav.setImageResource(R.drawable.filled_star)
+            taskId = item.taskId!!
+        }
+
         override fun onClick(view: View?) {
-            this.listener.onClick(adapterPosition)
+            this.listener.onClick(adapterPosition,taskId)
         }
     }
 }

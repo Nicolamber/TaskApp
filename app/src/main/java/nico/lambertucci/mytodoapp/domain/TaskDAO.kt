@@ -10,7 +10,7 @@ interface TaskDAO {
     fun getAllTasks(): List<Task>
 
     @Query("SELECT * FROM task WHERE task.`taskId` = :taskId")
-    fun getTaskById(taskId: String): Task
+    fun getTaskById(taskId: Int): Task
 
     @Query("SELECT * FROM task WHERE task.`isFavorite` = :favorite")
     fun getFavoriteTasks(favorite:Boolean): List<Task>

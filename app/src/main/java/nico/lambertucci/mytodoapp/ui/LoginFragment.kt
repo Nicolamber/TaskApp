@@ -14,10 +14,11 @@ import nico.lambertucci.mytodoapp.R
 import nico.lambertucci.mytodoapp.ui.viewmodel.LoginViewModel
 import nico.lambertucci.mytodoapp.utils.AuthenticationUtilities
 
+lateinit var taskAuthor:String
+
 class LoginFragment : Fragment() {
 
     private lateinit var viewModel: LoginViewModel
-    private lateinit var user:String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,9 +35,7 @@ class LoginFragment : Fragment() {
 
         loginUser.setOnClickListener {
             if (loginUser()) {
-                val bundle: Bundle? = Bundle()
-                bundle?.putString("taskAuthor",user)
-                findNavController().navigate(R.id.overviewScreen, bundle)
+                findNavController().navigate(R.id.overviewScreen)
             }
         }
         registerUser.setOnClickListener {
@@ -46,11 +45,11 @@ class LoginFragment : Fragment() {
 
     private fun loginUser(): Boolean {
 
-         user = username.editText?.text.toString()
+         taskAuthor = username.editText?.text.toString()
         val pass = password.editText?.text.toString()
 
-        if (AuthenticationUtilities().validateUserAndPass(user, pass)) {
-            return if (viewModel.loginUser(user, pass)) {
+        if (AuthenticationUtilities().validateUserAndPass(taskAuthor, pass)) {
+            return if (viewModel.loginUser(taskAuthor, pass)) {
                 true
             } else {
                 val builder = AlertDialog.Builder(requireContext())

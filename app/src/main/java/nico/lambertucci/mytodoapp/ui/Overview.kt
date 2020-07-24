@@ -1,10 +1,8 @@
 package nico.lambertucci.mytodoapp.ui
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -25,8 +23,6 @@ class Overview : Fragment() {
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var overviewToolbar: androidx.appcompat.widget.Toolbar
-    private var username: String? = null
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,31 +38,17 @@ class Overview : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(OverviewViewModel::class.java)
-        if (arguments != null) {
-            username = requireArguments().getString("taskAuthor")
 
-        }
-        overviewToolbar.apply {
-            title = "Inicio"
-            subtitle = "Bienvenido $username!"
-
-        }
+        setupToolbar()
         setupBottomNavigation()
         setUpView()
     }
 
     override fun onResume() {
         super.onResume()
-        if (arguments != null) {
-            username = requireArguments().getString("taskAuthor")
 
-        }
-        overviewToolbar.apply {
-            title = "Inicio"
-            subtitle = "Bienvenido $username!"
-
-        }
         setupBottomNavigation()
+        setupToolbar()
         setUpView()
     }
 
@@ -74,8 +56,10 @@ class Overview : Fragment() {
         viewManager = LinearLayoutManager(requireContext())
         viewModel.getTasks().observe(viewLifecycleOwner, Observer {
             viewAdapter = TaskAdapter(it, object : FavItemListener {
-                override fun onClick(position: Int) {
-                    findNavController().navigate(R.id.addTask)
+                override fun onClick(position: Int,taskId: Int) {
+                    val bundle: Bundle? = Bundle()
+                    bundle?.putInt("taskId",taskId)
+                    findNavController().navigate(R.id.detailFragment,bundle)
                 }
 
             })
@@ -97,8 +81,6 @@ class Overview : Fragment() {
 
     private fun setupBottomNavigation() {
 
-        val bundle: Bundle? = Bundle()
-
         bottomNavigationView.selectedItemId =
             R.id.overview
 
@@ -108,13 +90,11 @@ class Overview : Fragment() {
                     true
                 }
                 R.id.addNewTask -> {
-                    bundle?.putString("taskAuthor", username)
-                    findNavController().navigate(R.id.addTask, bundle)
+                    findNavController().navigate(R.id.addTask)
                     true
                 }
                 R.id.favs -> {
-                    bundle?.putString("taskAuthor", username)
-                    findNavController().navigate(R.id.favoritesFragment, bundle)
+                    findNavController().navigate(R.id.favoritesFragment)
                     true
                 }
                 else -> false
@@ -122,4 +102,23 @@ class Overview : Fragment() {
         }
     }
 
+    private fun setupToolbar(){
+        overviewToolbar.apply {
+            title = "Inicio"
+            subtitle = "Bienvenido: $taskAuthor"
+            setHasOptionsMenu(true)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.toolbar_menu,menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.CloseSession ->{ activity?.finish()}
+        }
+        return super.onOptionsItemSelected(item)
+    }
 }

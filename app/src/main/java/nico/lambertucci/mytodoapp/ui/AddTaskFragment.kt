@@ -16,15 +16,10 @@ import nico.lambertucci.mytodoapp.ui.viewmodel.AddTaskViewModel
 
 class AddTaskFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = AddTaskFragment()
-    }
-
     private lateinit var viewModel: AddTaskViewModel
     private lateinit var taskName: String
     private var taskFav: Boolean = false
     private var taskDescription: String? = null
-    private var author: String? = null
     private lateinit var newTaskToolbar: androidx.appcompat.widget.Toolbar
 
     override fun onCreateView(
@@ -41,19 +36,13 @@ class AddTaskFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        if (arguments != null) {
-            author = requireArguments().getString("taskAuthor")
-        }
 
         newTaskToolbar.apply {
             title = "Agregar tarea"
-            //TODO Modify navigate back with args
-           /* setNavigationIcon(R.drawable.ic_back_button)
+            setNavigationIcon(R.drawable.ic_back_button)
             setNavigationOnClickListener {
-                val bundle: Bundle? = Bundle()
-                bundle?.putString("taskAuthor", author)
                 findNavController().navigate(R.id.overviewScreen)
-            }*/
+            }
         }
 
         viewModel = ViewModelProvider(this).get(AddTaskViewModel::class.java)
@@ -63,13 +52,13 @@ class AddTaskFragment : Fragment() {
 
     private fun insertNewTask() {
         taskName = newTaskName.editText?.text.toString()
-        taskDescription = newTaskDescription.editText?.toString()
+        taskDescription = newTaskDescription.editText?.text.toString()
         if (taskFavorite.isChecked) {
             taskFav = true
         }
 
         if (taskName.isNotEmpty()) {
-            viewModel.addTask(taskName, taskDescription, taskFav, author)
+            viewModel.addTask(taskName, taskDescription, taskFav, taskAuthor)
         } else {
             val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("Error!")

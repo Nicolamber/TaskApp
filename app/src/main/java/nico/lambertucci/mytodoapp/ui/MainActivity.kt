@@ -12,7 +12,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         taskDatabase = TaskDatabase.getDatabase(applicationContext)
 
         val host = NavHostFragment.create(R.navigation.nav_graph)
