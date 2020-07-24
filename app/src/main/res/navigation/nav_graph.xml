@@ -16,11 +16,11 @@
             app:destination="@id/signUp" />
         <action
             android:id="@+id/action_loginFragment_to_mainScreen"
-            app:destination="@id/mainScreen" />
+            app:destination="@id/overviewScreen" />
     </fragment>
     <fragment
         android:id="@+id/signUp"
-        android:name="nico.lambertucci.mytodoapp.ui.SignUp"
+        android:name="nico.lambertucci.mytodoapp.ui.SignUpFragment"
         android:label="sign_up_fragment"
         tools:layout="@layout/sign_up_fragment" >
         <action
@@ -28,25 +28,37 @@
             app:destination="@id/loginFragment" />
     </fragment>
     <fragment
-        android:id="@+id/mainScreen"
-        android:name="nico.lambertucci.mytodoapp.ui.MainScreen"
+        android:id="@+id/overviewScreen"
+        android:name="nico.lambertucci.mytodoapp.ui.Overview"
         android:label="main_screen_fragment"
-        tools:layout="@layout/main_screen_fragment" >
+        tools:layout="@layout/overview_fragment" >
         <action
             android:id="@+id/action_mainScreen_to_addTask"
             app:destination="@id/addTask" />
+        <action
+            android:id="@+id/action_mainScreen_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
     </fragment>
     <fragment
         android:id="@+id/addTask"
-        android:name="nico.lambertucci.mytodoapp.ui.AddTask"
+        android:name="nico.lambertucci.mytodoapp.ui.AddTaskFragment"
         android:label="add_task_fragment"
         tools:layout="@layout/add_task_fragment" >
         <action
             android:id="@+id/action_addTask_to_mainScreen"
-            app:destination="@id/mainScreen" />
+            app:destination="@id/overviewScreen" />
         <argument
             android:name="taskAuthor"
             app:argType="string"
             android:defaultValue="none" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="nico.lambertucci.mytodoapp.ui.FavoritesFragment"
+        android:label="favorites_fragment"
+        tools:layout="@layout/favorites_fragment" >
+        <action
+            android:id="@+id/action_favoritesFragment_to_mainScreen"
+            app:destination="@id/overviewScreen" />
     </fragment>
 </navigation>

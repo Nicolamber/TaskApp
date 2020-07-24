@@ -13,7 +13,7 @@ interface TaskDAO {
     fun getTaskById(taskId: String): Task
 
     @Query("SELECT * FROM task WHERE task.`isFavorite` = :favorite")
-    fun getFavoriteTasks(favorite:Boolean): Task
+    fun getFavoriteTasks(favorite:Boolean): List<Task>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTask(task: Task)

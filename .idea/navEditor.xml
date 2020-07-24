@@ -29,6 +29,27 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="favoritesFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-153" />
+                            <option name="y" value="-216" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_favoritesFragment_to_mainScreen">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="loginFragment">
                     <value>
                       <LayoutPositions>
@@ -71,6 +92,11 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_mainScreen_to_favoritesFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                           </map>
                         </option>
                       </LayoutPositions>
@@ -81,8 +107,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-623" />
-                            <option name="y" value="-182" />
+                            <option name="x" value="-648" />
+                            <option name="y" value="-259" />
                           </Point>
                         </option>
                         <option name="myPositions">

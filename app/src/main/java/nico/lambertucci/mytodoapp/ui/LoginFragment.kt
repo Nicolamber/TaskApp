@@ -35,8 +35,8 @@ class LoginFragment : Fragment() {
         loginUser.setOnClickListener {
             if (loginUser()) {
                 val bundle: Bundle? = Bundle()
-                bundle?.putString("username",user)
-                findNavController().navigate(R.id.mainScreen, bundle)
+                bundle?.putString("taskAuthor",user)
+                findNavController().navigate(R.id.overviewScreen, bundle)
             }
         }
         registerUser.setOnClickListener {
