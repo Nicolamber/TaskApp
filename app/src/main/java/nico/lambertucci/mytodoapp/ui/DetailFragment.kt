@@ -5,18 +5,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.detail_fragment.*
 import nico.lambertucci.mytodoapp.R
+import nico.lambertucci.mytodoapp.di.Injection
 import nico.lambertucci.mytodoapp.ui.viewmodel.DetailViewModel
+import nico.lambertucci.mytodoapp.utils.ToolbarInterface
+import androidx.appcompat.widget.Toolbar
+import java.lang.NullPointerException
 
-class DetailFragment : Fragment() {
+class DetailFragment : Fragment(), ToolbarInterface {
 
     private lateinit var viewModel: DetailViewModel
-    private lateinit var detailToolbar: androidx.appcompat.widget.Toolbar
+    private lateinit var detailToolbar: Toolbar
     private var taskId: Int = 0
 
     override fun onCreateView(
@@ -37,30 +42,52 @@ class DetailFragment : Fragment() {
         if (arguments != null) {
             taskId = requireArguments().getInt("taskId")
         }
-        detailToolbar.apply {
-            title = "Detalle"
+
+        viewModel = ViewModelProvider(
+            this,
+            Injection.getViewModelFactory()
+        ).get(DetailViewModel::class.java)
+
+        setupToolbar(detailToolbar)
+        setupView()
+
+    }
+
+    private fun setupView() {
+        try {
+        viewModel.getTaskById(taskId)?.observe(viewLifecycleOwner, Observer {
+            detailTaskName.text = it.taskName
+            detailTaskDescription.text = it.taskDescription
+            if (it.isFavorite) {
+                detailFavorite.setImageResource(R.drawable.filled_star)
+            } else {
+                detailFavorite.setImageResource(R.drawable.empty_star)
+            }
+
+        })
+    }catch (e: NullPointerException){
+            val builder = AlertDialog.Builder(requireContext())
+            builder.apply {
+                setTitle(getString(R.string.errorTitle))
+                setMessage(getString(R.string.genericError))
+                setPositiveButton(android.R.string.ok) { dialog, _ ->
+                    findNavController().navigate(R.id.addTask)
+                    dialog.dismiss()
+                }
+                setNegativeButton(android.R.string.cancel){dialog,_ -> dialog.dismiss()}
+                show()
+            }
+        }
+    }
+
+    override fun setupToolbar(toolbar: Toolbar) {
+        toolbar.apply {
+            title = context.getString(R.string.detailTitle)
             setNavigationIcon(R.drawable.ic_back_button)
             setNavigationOnClickListener {
                 findNavController().navigate(R.id.overviewScreen)
             }
         }
-        viewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
-
-        setupView()
 
     }
-
-    private fun setupView(){
-        viewModel.getTaskById(taskId).observe(viewLifecycleOwner, Observer {
-            detailTaskName.text = it.taskName
-            detailTaskDescription.text = it.taskDescription
-            if (it.isFavorite){
-                detailFavorite.setImageResource(R.drawable.filled_star)
-            }else{
-                detailFavorite.setImageResource(R.drawable.empty_star)
-            }
-
-        })
-    }
-
 }

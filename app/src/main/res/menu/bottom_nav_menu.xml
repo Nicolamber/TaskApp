@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="@string/Overview" android:id="@+id/overview" android:icon="@drawable/todo_list"/>
+    <item android:title="@string/overview" android:id="@+id/overview" android:icon="@drawable/todo_list"/>
     <item android:title="" android:id="@+id/addNewTask" android:icon="@drawable/plus"/>
     <item android:title="@string/favorites" android:id="@+id/favs" android:icon="@drawable/empty_star"/>
 

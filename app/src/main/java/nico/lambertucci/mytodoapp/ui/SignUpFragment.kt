@@ -10,8 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.sign_up_fragment.*
 import nico.lambertucci.mytodoapp.R
+import nico.lambertucci.mytodoapp.di.Injection
 import nico.lambertucci.mytodoapp.ui.viewmodel.SignUpViewModel
-import nico.lambertucci.mytodoapp.utils.AuthenticationUtilities
 
 class SignUpFragment : Fragment() {
 
@@ -27,7 +27,7 @@ class SignUpFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(SignUpViewModel::class.java)
+        viewModel = ViewModelProvider(this, Injection.getViewModelFactory()).get(SignUpViewModel::class.java)
         signUpNewUser.setOnClickListener {
             if (signUpNewUser()) {
                 findNavController().navigate(R.id.overviewScreen, null)
@@ -39,31 +39,39 @@ class SignUpFragment : Fragment() {
         val newUsername = newUser.editText?.text.toString()
         val newUserPassword = newPassword.editText?.text.toString()
         val repeatedPass = repeatPassword.editText?.text.toString()
-        if (AuthenticationUtilities().validateUserAndPass(newUsername, newUserPassword)) {
-            if (AuthenticationUtilities().checkPassword(newUserPassword, repeatedPass)) {
-                return (viewModel.signUp(newUsername, newUserPassword))
-            } else {
-                val builder = AlertDialog.Builder(requireContext())
-                builder.setTitle("Error!")
-                builder.setMessage("Las contraseñas no coinciden.")
-                builder.setPositiveButton(android.R.string.ok) { _, _ ->
-                    newUser.editText?.text = null
-                    newPassword.editText?.text = null
-                    repeatPassword.editText?.text = null
+        if (viewModel.checkFields(newUsername,newUserPassword, repeatedPass)){
+            return if (viewModel.checkPassword(newUserPassword,repeatedPass)){
+                if (viewModel.signUp(newUsername,newUserPassword)){
+                    taskAuthor = newUsername
+                    true
+                }else{
+                    showErrorDialog(getString(R.string.errorSavingUser),true)
+
+                    false
                 }
-                builder.show()
+            }else{
+                showErrorDialog(getString(R.string.passwordError),false)
+                false
             }
-        } else {
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("Error!")
-            builder.setMessage("Usuario o contraseña incorrecto.")
-            builder.setPositiveButton(android.R.string.ok) { _, _ ->
-                newUser.editText?.text = null
-                newPassword.editText?.text = null
-                repeatPassword.editText?.text = null
-            }
-            builder.show()
+
+        }else{
+            showErrorDialog(getString(R.string.emptySignUpFields),false)
+            return false
         }
-        return false
+    }
+
+
+    private fun showErrorDialog(errorMessage: String, clearUserFields: Boolean){
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle(getString(R.string.errorTitle))
+        builder.setMessage(errorMessage)
+        builder.setPositiveButton(android.R.string.ok) { _, _ ->
+            if (clearUserFields) {
+                newUser.editText?.text = null
+            }
+            newPassword.editText?.text = null
+            repeatPassword.editText?.text = null
+        }
+        builder.show()
     }
 }

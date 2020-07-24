@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.add_task_fragment.*
 import nico.lambertucci.mytodoapp.R
+import nico.lambertucci.mytodoapp.di.Injection
 import nico.lambertucci.mytodoapp.ui.viewmodel.AddTaskViewModel
 
 
@@ -45,7 +46,10 @@ class AddTaskFragment : Fragment() {
             }
         }
 
-        viewModel = ViewModelProvider(this).get(AddTaskViewModel::class.java)
+        viewModel = ViewModelProvider(
+            this,
+            Injection.getViewModelFactory()
+        ).get(AddTaskViewModel::class.java)
 
         addTaskButton.setOnClickListener { insertNewTask() }
     }
@@ -57,19 +61,24 @@ class AddTaskFragment : Fragment() {
             taskFav = true
         }
 
-        if (taskName.isNotEmpty()) {
-            viewModel.addTask(taskName, taskDescription, taskFav, taskAuthor)
-        } else {
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("Error!")
-            builder.setMessage("Ocurrió un error al guardar la Tarea, por favor vuelve a intentarlo")
-            builder.setPositiveButton(android.R.string.ok) { _, _ ->
-                newTaskName.editText?.text = null
-                newTaskDescription.editText?.text = null
+        if (taskName.isNotEmpty() && taskAuthor.isNotEmpty()) {
+            if (viewModel.addTask(taskName, taskDescription, taskFav, taskAuthor)) {
+                findNavController().navigate(R.id.overviewScreen)
+            } else {
+                showErrorDialog(getString(R.string.taskNameError))
             }
-            builder.show()
+        } else {
+            showErrorDialog(getString(R.string.addTaskError))
         }
-        findNavController().navigate(R.id.overviewScreen)
+
+    }
+
+    private fun showErrorDialog(errorMessage: String) {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle(getString(R.string.errorTitle))
+        builder.setMessage(errorMessage)
+        builder.setPositiveButton(android.R.string.ok) { dialog, _ -> dialog.dismiss() }
+        builder.show()
     }
 
 }

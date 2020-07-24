@@ -11,7 +11,7 @@ interface UserDAO {
     fun getAllUsers(): List<User>
 
     @Query("SELECT * FROM user WHERE user.`username` = :username")
-    fun verifyUserById(username: String): User
+    fun verifyUserById(username: String): User?
 
    /* @Query("SELECT * FROM user WHERE user.`username` = :username")
     fun getUserById(username: String): LiveData<Boolean>*/

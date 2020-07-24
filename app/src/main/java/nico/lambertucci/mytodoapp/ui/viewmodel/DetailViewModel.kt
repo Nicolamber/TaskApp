@@ -1,18 +1,23 @@
 package nico.lambertucci.mytodoapp.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import nico.lambertucci.mytodoapp.domain.database.Task
-import nico.lambertucci.mytodoapp.ui.taskDatabase
+import nico.lambertucci.mytodoapp.domain.repository.TaskRepository
+import java.lang.NullPointerException
 
-class DetailViewModel : ViewModel() {
+class DetailViewModel(private val repository: TaskRepository) : ViewModel() {
 
-    private var task = MutableLiveData<Task>()
-    private val database =  taskDatabase.taskDAO()
 
-    fun getTaskById(taskId: Int): LiveData<Task>{
-        task.value = database.getTaskById(taskId)
+    fun getTaskById(taskId: Int): LiveData<Task>? {
+        val task : LiveData<Task>?
+        try {
+            task = repository.getTaskById(taskId)
+        }catch (e: NullPointerException){
+            Log.e(VIEWMODELS_TAG, e.localizedMessage)
+            throw e
+        }
         return task
     }
 

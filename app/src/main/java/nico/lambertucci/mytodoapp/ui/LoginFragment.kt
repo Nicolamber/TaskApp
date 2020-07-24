@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.login_fragment.*
 import nico.lambertucci.mytodoapp.R
+import nico.lambertucci.mytodoapp.di.Injection
 import nico.lambertucci.mytodoapp.ui.viewmodel.LoginViewModel
 import nico.lambertucci.mytodoapp.utils.AuthenticationUtilities
 
@@ -29,9 +30,7 @@ class LoginFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
-
-
+        viewModel = ViewModelProvider(this, Injection.getViewModelFactory()).get(LoginViewModel::class.java)
 
         loginUser.setOnClickListener {
             if (loginUser()) {
@@ -48,13 +47,13 @@ class LoginFragment : Fragment() {
          taskAuthor = username.editText?.text.toString()
         val pass = password.editText?.text.toString()
 
-        if (AuthenticationUtilities().validateUserAndPass(taskAuthor, pass)) {
+        if (viewModel.checkFields(taskAuthor, pass)) {
             return if (viewModel.loginUser(taskAuthor, pass)) {
                 true
             } else {
                 val builder = AlertDialog.Builder(requireContext())
-                builder.setTitle("Error!")
-                builder.setMessage("Usuario o contraseña incorrecto.")
+                builder.setTitle(getString(R.string.errorTitle))
+                builder.setMessage(getString(R.string.userOrPassInvalid))
                 builder.setPositiveButton(android.R.string.ok) { _, _ ->
                     username.editText?.text = null
                     password.editText?.text = null
